@@ -75,7 +75,7 @@ def update_star_velocity(star, time_step):
 def update_star_position(star, time_step):
 	star.x = star.x + (star.velocity.v_x * time_step) + (0.5 * star.last_accumlators[0].acceleration_x(star.weight) * (time_step ** 2))
 	star.y = star.y + (star.velocity.v_y * time_step) + (0.5 * star.last_accumlators[0].acceleration_y(star.weight) * (time_step ** 2))
-	star.z = star.z + (star.velocity.v_z * time_step) + (0.5 * star.last_accumlators[0].acceleration_z(star.weight) * (time_step ** 2)) 
+	star.z = star.z + (star.velocity.v_z * time_step) + (0.5 * star.last_accumlators[0].acceleration_z(star.weight) * (time_step ** 2))
 
 def print_result(id, own_stars, own_accumlators):
 	for i in range(len(own_stars)):
@@ -95,12 +95,12 @@ NUMBER_OF_STARS = int(sys.argv[1])
 NUMBER_OF_ITERATION = 2
 TIME_STEP = 0.001
 p = comm.size
-		
+
 for id in range(comm.size):
 	if comm.rank == id:
-		stars_generator = StarGenerator(MIN_WEIGHT, MAX_WEIGHT, MAX_COORDINATE)		
-		own_stars = stars_generator.generate_concrete_list_of_stars_for(id)
-		#own_stars = stars_generator.generate_random_list_of_stars(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))
+		stars_generator = StarGenerator(MIN_WEIGHT, MAX_WEIGHT, MAX_COORDINATE)
+		#own_stars = stars_generator.generate_concrete_list_of_stars_for(id)
+		own_stars = stars_generator.generate_random_list_of_stars(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))
 		for i in range(NUMBER_OF_ITERATION):
 			print('Iteration:', i)
 			compute_accelerations(id, own_stars)

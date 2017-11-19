@@ -1,4 +1,5 @@
 import sys
+import copy
 
 from mpi4py import MPI
 from star import Star
@@ -45,8 +46,8 @@ id = comm.rank
 
 stars_generator = StarGenerator(MIN_WEIGHT, MAX_WEIGHT, MAX_COORDINATE)
 
-own_stars = stars_generator.generate_concrete_list_of_stars_for(id)
-#own_stars = stars_generator.generate_random_list_of_stars(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))
+#own_stars = stars_generator.generate_concrete_list_of_stars_for(id)
+own_stars = stars_generator.generate_random_list_of_stars(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))
 accumlator = [StarInteractionsAccumlator() for acc in range(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))]
 stars_buffer = own_stars
 
