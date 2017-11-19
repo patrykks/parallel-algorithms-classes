@@ -57,7 +57,7 @@ def compute_accelerations(id, own_stars):
 		own_accumlators[i] = own_accumlators[i].sum(accumlators_buffer[i])
 		own_stars[i].update_accumlators(own_accumlators[i])
 
-	print_result(id, own_stars, own_accumlators)
+	#print_result(id, own_stars, own_accumlators)
 
 def update_stars_velocity(stars, time_step):
 	for star in stars:
@@ -81,19 +81,19 @@ def print_result(id, own_stars, own_accumlators):
 	for i in range(len(own_stars)):
 		print(id, str(own_stars[i]), str(own_accumlators[i]))
 
-if len(sys.argv) != 2:
-	exit_msg ='Incorrect number of arguments. Actual: {} expected: {}. \n'.format(len(sys.argv) - 1, 1)
-	exit_msg += 'Usage python <PYTHON_SCRIPT_NAME> <NUMBER_OF_STARS>'
+if len(sys.argv) != 3:
+	exit_msg ='Incorrect number of arguments. Actual: {} expected: {}. \n'.format(len(sys.argv) - 1, 2)
+	exit_msg += 'Usage python <PYTHON_SCRIPT_NAME> <NUMBER_OF_STARS> <NUMBER_OF_ITERATIONS>'
 	sys.exit(exit_msg)
 
 comm = MPI.COMM_WORLD
 
 MAX_WEIGHT = 100000000000
-MIN_WEIGHT = 100000
-MAX_COORDINATE = 10000
+MIN_WEIGHT = 10000
+MAX_COORDINATE = 100000000000
 NUMBER_OF_STARS = int(sys.argv[1])
-NUMBER_OF_ITERATION = 2
-TIME_STEP = 0.001
+NUMBER_OF_ITERATIONS = int(sys.argv[2])
+TIME_STEP = 360.0
 p = comm.size
 
 for id in range(comm.size):
@@ -101,8 +101,9 @@ for id in range(comm.size):
 		stars_generator = StarGenerator(MIN_WEIGHT, MAX_WEIGHT, MAX_COORDINATE)
 		#own_stars = stars_generator.generate_concrete_list_of_stars_for(id)
 		own_stars = stars_generator.generate_random_list_of_stars(find_number_of_stars_for_process(NUMBER_OF_STARS, p, id))
-		for i in range(NUMBER_OF_ITERATION):
+		for i in range(NUMBER_OF_ITERATIONS):
 			print('Iteration:', i)
 			compute_accelerations(id, own_stars)
 			update_stars_velocity(own_stars, TIME_STEP)
 			update_stars_position(own_stars, TIME_STEP)
+		print(own_stars)
