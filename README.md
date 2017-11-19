@@ -1,0 +1,1 @@
+The project has been created within the Parallel Algorithms classes held at the AGH University of Science and Technology, Cracow.
