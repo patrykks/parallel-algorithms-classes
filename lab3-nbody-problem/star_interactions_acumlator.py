@@ -15,11 +15,11 @@ class StarInteractionsAccumlator:
 
 	@staticmethod
 	def sum_of_interaction(star_1, star_2):
-		euclidean_distance = StarInteractionsAccumlator.squared_euclidean_distance(star_1, star_2)
+		euclidean_distance = StarInteractionsAccumlator.squared_euclidean_distance(star_1, star_2) + 1
 		
-		acucmulated_sum_x = (star_2.x - star_1.x) * euclidean_distance
-		acucmulated_sum_y = (star_2.y - star_1.y) * euclidean_distance
-		acucmulated_sum_z = (star_2.z - star_1.z) * euclidean_distance
+		acucmulated_sum_x = (star_2.x - star_1.x) / euclidean_distance
+		acucmulated_sum_y = (star_2.y - star_1.y) / euclidean_distance
+		acucmulated_sum_z = (star_2.z - star_1.z) / euclidean_distance
 
 		return (
 			acucmulated_sum_x,
@@ -36,11 +36,11 @@ class StarInteractionsAccumlator:
 		return constants.G * planet_mass * self.acucmulated_sum_z
 
 	def update(self, star_1, star_2):
-		euclidean_distance = self.squared_euclidean_distance(star_1, star_2)
+		euclidean_distance = self.squared_euclidean_distance(star_1, star_2) + 1
 		
-		self.acucmulated_sum_x += star_2.weight * (star_2.x - star_1.x) * euclidean_distance
-		self.acucmulated_sum_y += star_2.weight * (star_2.y - star_1.y) * euclidean_distance
-		self.acucmulated_sum_z += star_2.weight * (star_2.z - star_1.z) * euclidean_distance
+		self.acucmulated_sum_x += star_2.weight * (star_2.x - star_1.x) / euclidean_distance
+		self.acucmulated_sum_y += star_2.weight * (star_2.y - star_1.y) / euclidean_distance
+		self.acucmulated_sum_z += star_2.weight * (star_2.z - star_1.z) / euclidean_distance
 
 	def sum(self, another_accumlator):
 		return StarInteractionsAccumlator(
